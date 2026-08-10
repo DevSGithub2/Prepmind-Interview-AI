@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- SEO Meta Tags for Google -->
+  <title>PrepMind AI - Free AI Technical Interview Generator</title>
+  <meta name="title" content="PrepMind AI - Free AI Technical Interview Generator" />
+  <meta name="description" content="Generate instant, high-quality multiple-choice interview questions for Frontend, Backend, Data Science, and DevOps roles." />
+  <meta name="keywords" content="AI interview generator, MCQ interview prep, coding interview questions, PrepMind AI" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between font-sans antialiased">
+
+  <!-- Navbar -->
+  <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <span class="text-2xl font-black bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">PrepMind AI</span>
+      </div>
+      <span class="text-xs font-semibold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Internship Project</span>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-3xl mx-auto px-6 py-12 flex-grow w-full">
+    
+    <!-- Setup Card -->
+    <div id="setup-card" class="bg-slate-900/80 border border-slate-800 rounded-2xl p-8 shadow-xl space-y-6">
+      <div>
+        <h1 class="text-3xl font-bold text-white mb-2">Test Your Skills</h1>
+        <p class="text-slate-400 text-sm">Select your domain, experience level, and generate tailored MCQ practice questions.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Target Role</label>
+          <select id="role" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-slate-200 focus:outline-none focus:border-indigo-500">
+            <option value="Frontend Developer">Frontend Developer</option>
+            <option value="Backend Developer">Backend Developer</option>
+            <option value="Fullstack Engineer">Fullstack Engineer</option>
+            <option value="Data Scientist">Data Scientist</option>
+            <option value="DevOps Engineer">DevOps Engineer</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Experience Level</label>
+          <select id="level" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-slate-200 focus:outline-none focus:border-indigo-500">
+            <option value="Junior / Entry Level">Junior / Entry Level</option>
+            <option value="Mid Level">Mid Level</option>
+            <option value="Senior Level">Senior Level</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Number of Questions</label>
+        <select id="num-questions" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-slate-200 focus:outline-none focus:border-indigo-500">
+          <option value="3">3 Questions (Fast)</option>
+          <option value="5" selected>5 Questions (Standard)</option>
+          <option value="10">10 Questions (Deep Assessment)</option>
+        </select>
+      </div>
+
+      <button id="generate-btn" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold py-4 rounded-xl shadow-lg transition duration-200 flex justify-center items-center space-x-2">
+        <span id="gen-spinner" class="hidden animate-spin rounded-full h-5 w-5 border-b-2 border-white"></span>
+        <span id="btn-text">Generate MCQ Test</span>
+      </button>
+    </div>
+
+    <!-- Quiz Card -->
+    <div id="quiz-card" class="hidden bg-slate-900/80 border border-slate-800 rounded-2xl p-8 shadow-xl space-y-6">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+        <span id="current-tag" class="text-xs font-semibold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400"></span>
+        <span id="progress-text" class="text-xs text-slate-400"></span>
+      </div>
+
+      <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+        <div id="progress-bar" class="bg-indigo-500 h-full w-0 transition-all duration-300"></div>
+      </div>
+
+      <h2 id="question-text" class="text-xl font-medium text-slate-100 min-h-[60px]"></h2>
+
+      <div id="options-container" class="space-y-3"></div>
+
+      <button id="next-btn" disabled class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-50 disabled:cursor-not-allowed py-3 rounded-xl font-medium transition duration-200">
+        Next Question
+      </button>
+    </div>
+
+    <!-- Result Card -->
+    <div id="result-card" class="hidden bg-slate-900/80 border border-slate-800 rounded-2xl p-8 shadow-xl space-y-6">
+      <div class="text-center space-y-2">
+        <h2 class="text-2xl font-bold text-white">Assessment Completed!</h2>
+        <p id="score-text" class="text-indigo-400 text-lg font-medium"></p>
+      </div>
+
+      <div id="review-container" class="space-y-4 max-h-[400px] overflow-y-auto pr-2"></div>
+
+      <button id="restart-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition duration-200">
+        Start New Practice Session
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+    Built as an Internship Capstone Project • Powered by Groq & Vercel
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
